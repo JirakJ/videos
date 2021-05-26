@@ -3,17 +3,17 @@ import SearchBar from "./SearchBar";
 import youtube from "../api/youtube";
 import VideoList from "./VideoList";
 import VideoDetail from "./VideoDetail";
+import useVideos from "../hooks/useVideos";
 
 const App = () => {
-    const [videos, setVideos] = useState([]);
+    const [videos, setVideos] = useVideos("Metal");
     const [selectedVideo, setSelectedVideo] = useState(null);
 
     useEffect(() => onFormSubmit("Metal"));
 
-    const initData = (response) => {
-        setVideos(response.data.items);
-        setSelectedVideo(response.data.items[0])
-    }
+    useEffect(() => {
+        setVideos(videos[0]);
+    }, [videos]);
 
     const onFormSubmit = async (value) => {
         await youtube.get("/search", { params: { q: value } })
